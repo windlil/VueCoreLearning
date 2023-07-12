@@ -1,7 +1,8 @@
+
 const path = require('path')
 const ts = require('rollup-plugin-typescript2')
-const nodeResolve = require('@rollup/plugin-node-resolve')
 const json = require('@rollup/plugin-json')
+const nodeResolve = require('@rollup/plugin-node-resolve')
 
 const packagesDir = path.resolve(__dirname,'packages')
 const packageDir = path.resolve(packagesDir, process.env.TARGET ?? '')

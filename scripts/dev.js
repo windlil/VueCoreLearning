@@ -3,7 +3,7 @@ const execa = require('execa')
 
 const target = 'reactivity'
 
-async function build(target:string) {
+async function build(target) {
   execa('rollup',['-c','--environment', `TARGET:${target}`], {
     stdio: 'inherit'
   })
@@ -11,4 +11,3 @@ async function build(target:string) {
 
 build(target)
 
-export {}

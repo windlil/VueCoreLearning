@@ -1,5 +1,3 @@
-const reactivity =() => {
-
-}
-
-export {reactivity}
+export {
+  reactive
+} from './reactive'
