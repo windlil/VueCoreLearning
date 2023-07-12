@@ -6,7 +6,7 @@ const json = require('@rollup/plugin-json')
 const packagesDir = path.resolve(__dirname,'packages')
 const packageDir = path.resolve(packagesDir, process.env.TARGET)
 
-function resolve(p) {
+function resolve(p:string) {
   return path.resolve(packageDir, p)
 }
 
@@ -30,7 +30,7 @@ const outPutConfig = {
 }
 
 
-function createConfig(format, output) {
+function createConfig(format:string, output:any) {
   output.sourcemap = true
   return {
     input: resolve('src/index.ts'),
@@ -45,8 +45,8 @@ function createConfig(format, output) {
   }
 }
 
-const config = buildOptions.formats.map((item) => {
-  return createConfig(item, outPutConfig[item])
+const config = buildOptions.formats.map((item:string) => {
+  return createConfig(item, (outPutConfig as any)[item])
 })
 
 console.log(config)
