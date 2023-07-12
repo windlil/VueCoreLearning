@@ -14,6 +14,9 @@ importers:
       '@rollup/plugin-node-resolve':
         specifier: ^15.1.0
         version: 15.1.0(rollup@3.26.2)
+      '@rollup/plugin-typescript':
+        specifier: ^11.1.2
+        version: 11.1.2(rollup@3.26.2)(typescript@5.1.6)
       execa:
         specifier: ^5.1.1
         version: 5.1.1
@@ -66,6 +69,25 @@ packages:
       is-module: 1.0.0
       resolve: 1.22.2
       rollup: 3.26.2
+    dev: false
+
+  /@rollup/plugin-typescript@11.1.2(rollup@3.26.2)(typescript@5.1.6):
+    resolution: {integrity: sha512-0ghSOCMcA7fl1JM+0gYRf+Q/HWyg+zg7/gDSc+fRLmlJWcW5K1I+CLRzaRhXf4Y3DRyPnnDo4M2ktw+a6JcDEg==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^2.14.0||^3.0.0
+      tslib: '*'
+      typescript: '>=3.7.0'
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+      tslib:
+        optional: true
+    dependencies:
+      '@rollup/pluginutils': 5.0.2(rollup@3.26.2)
+      resolve: 1.22.2
+      rollup: 3.26.2
+      typescript: 5.1.6
     dev: false
 
   /@rollup/pluginutils@4.2.1:

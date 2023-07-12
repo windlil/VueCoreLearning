@@ -4,9 +4,9 @@ const nodeResolve = require('@rollup/plugin-node-resolve')
 const json = require('@rollup/plugin-json')
 
 const packagesDir = path.resolve(__dirname,'packages')
-const packageDir = path.resolve(packagesDir, process.env.TARGET)
+const packageDir = path.resolve(packagesDir, process.env.TARGET ?? '')
 
-function resolve(p:string) {
+function resolve(p) {
   return path.resolve(packageDir, p)
 }
 
@@ -30,7 +30,7 @@ const outPutConfig = {
 }
 
 
-function createConfig(format:string, output:any) {
+function createConfig(format, output) {
   output.sourcemap = true
   return {
     input: resolve('src/index.ts'),
@@ -45,11 +45,9 @@ function createConfig(format:string, output:any) {
   }
 }
 
-const config = buildOptions.formats.map((item:string) => {
-  return createConfig(item, (outPutConfig as any)[item])
+const config = buildOptions.formats.map((item) => {
+  return createConfig(item, outPutConfig[item])
 })
-
-console.log(config)
 
 module.exports = config
 

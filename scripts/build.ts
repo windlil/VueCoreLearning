@@ -5,7 +5,7 @@ const execa = require('execa')
 // const stayFile = ['package.josn', 'README.md']
 
 const targets = fs.readdirSync('packages')
-.filter((file) => {
+.filter((file:string) => {
   if (fs.statSync(`packages/${file}`).isDirectory()) {
     return true
   }
@@ -13,13 +13,15 @@ const targets = fs.readdirSync('packages')
 })
 
 
-async function build(target) {
+type fn = (target:string) => Promise<any>
+
+async function build(target:string) {
   execa('rollup', ['-c', '--environment', `TARGET:${target}`],{
     stdio: 'inherit'
   })
 }
 
-function runParallel(targets, iteratorFn) {
+function runParallel(targets:string[], iteratorFn:fn) {
   const p = []
   for (let i = 0; i < targets.length; i++) {
     p.push(iteratorFn(targets[i]))
