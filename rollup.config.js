@@ -32,6 +32,7 @@ const outPutConfig = {
 
 
 function createConfig(format, output) {
+  output.name = buildOptions.name
   output.sourcemap = true
   return {
     input: resolve('src/index.ts'),
