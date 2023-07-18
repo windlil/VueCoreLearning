@@ -1,41 +1,34 @@
 import {
-  mutableHandlers,
-  shallowHandlers,
-  readonlyHandlers,
-  shallowReadonlyHandlers
+  reactiveHandler,
+  readonlyHandler,
+  shallowReadonlyHandler
 } from './baseHandlers'
-import { isObject } from '@vue/shared'
+import { isObject } from '../../shared/index'
 
-const reactiveMap = new WeakMap()
-const shallowMap = new WeakMap()
+const reactiveProxyMap = new WeakMap()
+const readonlyProxyMap = new WeakMap()
+const shallowReadonlyProxyMap = new WeakMap()
 
-function createReactiveObject(target:object, readonly:boolean = false, baseHandlers:object) {
-  if (!isObject(target)) {
-    return target
-  }
-  const proxyMap = readonly? shallowMap: reactiveMap
-
-  const existProxy = proxyMap.get(target)
-  if (existProxy) {
-    return existProxy
-  }
-  const p = new Proxy(target, baseHandlers)
-  proxyMap.set(target, p)
-  return p
+export function reactive(target) {
+  return createReactiveObject(target, reactiveProxyMap, reactiveHandler)
 }
 
-export function reactive(target:object) {
-  return createReactiveObject(target, false, mutableHandlers)
+export function readonly(target) {
+  return createReactiveObject(target, readonlyProxyMap, readonlyHandler)
 }
 
-export function shallowReactive(target:object) {
-  return createReactiveObject(target, false, shallowHandlers)
+export function shallowReadonly(target) {
+  return createReactiveObject(target, shallowReadonlyProxyMap, shallowReadonlyHandler)
 }
 
-export function readonly(target:object) {
-  return createReactiveObject(target, true, readonlyHandlers)
-}
+function createReactiveObject(target, proxyMap, baseHandlers) {
+  if (!isObject(target)) return target
+  const existingProxy = proxyMap.get(target)
+  
+  if (existingProxy) return existingProxy
 
-export function shallowReadonly(target:object) {
-  return createReactiveObject(target, true, shallowReadonlyHandlers)
+  const proxy = new Proxy(target, baseHandlers)
+  proxyMap.set(target, proxy)
+
+  return proxy
 }
