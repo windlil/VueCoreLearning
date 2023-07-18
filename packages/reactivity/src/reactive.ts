@@ -5,9 +5,9 @@ import {
 } from './baseHandlers'
 import { isObject } from '../../shared/index'
 
-const reactiveProxyMap = new WeakMap()
-const readonlyProxyMap = new WeakMap()
-const shallowReadonlyProxyMap = new WeakMap()
+export const reactiveProxyMap = new WeakMap()
+export const readonlyProxyMap = new WeakMap()
+export const shallowReadonlyProxyMap = new WeakMap()
 
 export function reactive(target) {
   return createReactiveObject(target, reactiveProxyMap, reactiveHandler)
