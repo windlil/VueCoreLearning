@@ -24,7 +24,6 @@ export function shallowReadonly(target) {
 function createReactiveObject(target, proxyMap, baseHandlers) {
   if (!isObject(target)) return target
   const existingProxy = proxyMap.get(target)
-  
   if (existingProxy) return existingProxy
 
   const proxy = new Proxy(target, baseHandlers)

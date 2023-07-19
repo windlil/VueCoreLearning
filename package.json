@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "build": "rollup -c"
   },
   "keywords": [],
   "author": "",
@@ -14,5 +15,14 @@
     "@rollup/plugin-typescript": "^11.1.2",
     "rollup": "^3.26.3",
     "typescript": "^5.1.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.9",
+    "@babel/preset-env": "^7.22.9",
+    "@babel/preset-typescript": "^7.22.5",
+    "@types/jest": "^29.5.3",
+    "babel-jest": "^29.6.1",
+    "jest": "^29.6.1",
+    "tslib": "^2.6.0"
   }
 }

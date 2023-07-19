@@ -10,6 +10,7 @@ export default defineConfig({
   ],
   output: [
     {
+      name: 'vue',
       format: 'cjs',
       file: './dist/mini-vue.cjs.js',
     },
