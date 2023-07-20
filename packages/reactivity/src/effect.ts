@@ -1,6 +1,7 @@
 import { extend } from '../../shared/index'
 
 let activeEffect
+let shouldTrack
 
 class ReactiveEffect {
   private _fn: any
@@ -13,8 +14,18 @@ class ReactiveEffect {
   }
 
   run() {
+    //当执行stop后 不应该再次去收集effect 因此不能走下面的过程
+    if (!this.active) {
+      return this._fn()
+    }
+    //防止重复track
+    shouldTrack = true
+
     activeEffect = this
     const res = this._fn()
+
+    shouldTrack = false;
+    activeEffect = undefined
     return res
   }
 
@@ -35,8 +46,12 @@ function cleanUpEffect(effect) {
 
 const targetMap = new WeakMap()
 
+export function isTracking() {
+  return shouldTrack && activeEffect !== undefined;
+}
+
 export function track(target, key) {
-  if (!activeEffect) return
+  if (!isTracking()) return
 
   let depsMap = targetMap.get(target)
 
@@ -52,8 +67,12 @@ export function track(target, key) {
     depsMap.set(key, deps)
   }
 
-  deps.add(activeEffect)
-  activeEffect.deps.push(deps)
+  trackEffect(deps)
+}
+
+export function trackEffect(dep) {
+  dep.add(activeEffect)
+  activeEffect.deps.push(dep)
 }
 
 export function trigger(target, key) {
@@ -65,7 +84,11 @@ export function trigger(target, key) {
 
   const effects = depsMap.get(key)
   
-  for (const e of effects) {
+  triggerEffect(effects)
+}
+
+export function triggerEffect(dep) {  
+  for (const e of dep) {
     if (e.scheduler) {
       e.scheduler()
     } else {

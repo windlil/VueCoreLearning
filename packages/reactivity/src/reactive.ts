@@ -5,6 +5,11 @@ import {
 } from './baseHandlers'
 import { isObject } from '../../shared/index'
 
+export const enum ReactiveFlages {
+  IS_REACTIVE = '__v_isReactive',
+  IS_READONLY = '__v__isReadonly'
+}
+
 export const reactiveProxyMap = new WeakMap()
 export const readonlyProxyMap = new WeakMap()
 export const shallowReadonlyProxyMap = new WeakMap()
@@ -30,4 +35,16 @@ function createReactiveObject(target, proxyMap, baseHandlers) {
   proxyMap.set(target, proxy)
 
   return proxy
+}
+
+export function isReactive(value) {
+  return !!value[ReactiveFlages.IS_REACTIVE]
+}
+
+export function isReadonly(value) {
+  return !!value[ReactiveFlages.IS_READONLY]
+}
+
+export function isProxy(value) {
+  return isReactive(value) || isReadonly(value)
 }
