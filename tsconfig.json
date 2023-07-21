@@ -5,7 +5,7 @@
     "rootDir": ".",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "target": "es2016",
+    "target": "esnext",
     "module": "esnext",
     "noImplicitAny": false,
     "removeComments": true,
@@ -13,6 +13,5 @@
     "sourceMap": true,
     "downlevelIteration": true,
     "lib": ["esnext", "DOM"],
-  },
-  "include": ["packages/*/src", "packages/*/__tests__"]
+  }
 }

@@ -3,7 +3,7 @@ import {
   readonlyHandler,
   shallowReadonlyHandler
 } from './baseHandlers'
-import { isObject } from '../../shared/index'
+import { isObject } from '../shared/index'
 
 export const enum ReactiveFlages {
   IS_REACTIVE = '__v_isReactive',

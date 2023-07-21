@@ -1,9 +1,9 @@
-import { extend } from '../../shared/index'
+import { extend } from '../shared/index'
 
 let activeEffect
 let shouldTrack
 
-class ReactiveEffect {
+export class ReactiveEffect {
   private _fn: any
   private active = true
   deps = []
@@ -58,7 +58,7 @@ export function track(target, key) {
   if (!depsMap) {
     depsMap = new Map()
     targetMap.set(target, depsMap)
-  } 
+  }
 
   let deps = depsMap.get(key)
 
@@ -83,11 +83,11 @@ export function trigger(target, key) {
   }
 
   const effects = depsMap.get(key)
-  
+
   triggerEffect(effects)
 }
 
-export function triggerEffect(dep) {  
+export function triggerEffect(dep) {
   for (const e of dep) {
     if (e.scheduler) {
       e.scheduler()
@@ -98,7 +98,7 @@ export function triggerEffect(dep) {
 }
 
 export function effect(fn, options: any = {}) {
-  const _effect =  new ReactiveEffect(fn, options.scheduler)
+  const _effect = new ReactiveEffect(fn, options.scheduler)
   extend(_effect, options)
   _effect.run()
   const runner: any = _effect.run.bind(_effect)

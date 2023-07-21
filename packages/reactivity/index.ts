@@ -13,5 +13,12 @@ export {
 } from './effect'
 
 export {
-  ref
+  ref,
+  isRef,
+  unRef,
+  proxyRefs
 } from './ref'
+
+export {
+  computed
+} from './computed'

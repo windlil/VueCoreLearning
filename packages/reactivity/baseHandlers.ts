@@ -1,12 +1,12 @@
-import { isObject } from "../../shared/index"
+import { isObject, hasChanged } from "../shared/index"
 import { ReactiveFlages, reactive, readonly } from "./reactive"
 import { track, trigger } from './effect'
 
 
 function createGetter(isReadonly = false, isShallow = false) {
-  return function(target, key, receiver) {
+  return function (target, key, receiver) {
     if (key === ReactiveFlages.IS_REACTIVE) {
-      return !isReadonly 
+      return !isReadonly
     } else if (key === ReactiveFlages.IS_READONLY) {
       return isReadonly
     }
@@ -23,7 +23,7 @@ function createGetter(isReadonly = false, isShallow = false) {
     }
 
     if (isObject(res)) {
-      return isReadonly? readonly(res): reactive(res)
+      return isReadonly ? readonly(res) : reactive(res)
     }
 
     return res
@@ -32,7 +32,9 @@ function createGetter(isReadonly = false, isShallow = false) {
 }
 
 function createSetter() {
-  return function(target, key, newValue, receiver) {
+  return function (target, key, newValue, receiver) {
+    const oldValue = Reflect.get(target, key, receiver)
+    if (!hasChanged(oldValue, newValue)) return
     const res = Reflect.set(target, key, newValue, receiver)
     trigger(target, key)
     return res
