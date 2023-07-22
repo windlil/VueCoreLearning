@@ -5,8 +5,8 @@ import nodeResolve from '@rollup/plugin-node-resolve'
 export default defineConfig({
   input: './packages/index.ts',
   plugins: [
-    typescript(),
-    nodeResolve()
+    nodeResolve(),
+    typescript()
   ],
   output: [
     {
@@ -17,7 +17,7 @@ export default defineConfig({
     {
       name: "vue",
       format: "es",
-      file: './dist/mini-vue.js',
+      file: './dist/mini-vue.mjs',
     },
   ]
 })
