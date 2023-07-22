@@ -1,4 +1,4 @@
-import { isObject } from "packages/shared"
+
 import { createComponentInstance, setupComponent } from "./component"
 import { ShapeFlags } from "packages/shared/ShapeFlags"
 
@@ -32,7 +32,13 @@ function mountElement(vnode, container)  {
 
   const { props } = vnode
   for (const item in props) {
-    el.setAttribute(item, props[item])
+    const isEvent = item.slice(0, 2) === 'on'
+    if (isEvent) {
+      const event = item.slice(2).toLowerCase()
+      el.addEventListener(event, props[item])
+    } else {
+      el.setAttribute(item, props[item])
+    }
   }
 
   container.append(el)

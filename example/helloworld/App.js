@@ -1,13 +1,18 @@
 import { h } from '../../dist/mini-vue.mjs'
+import { foo } from './foo.js'
 
 export const App = {
   render() {
-    window.self = this
+
     return h('div',
     {
-      style: "color: red"
+      style: "color: red",
     },
-    [h('p', {style: 'color: blue'}, 'p1'), h('p', {style: 'color: gray'}, this.msg)])
+    [h(foo,{
+      onAddFooTest(a, b) {
+        console.log('emit执行', a,b)
+      }
+    })])
   },
   setup() {
     return {
