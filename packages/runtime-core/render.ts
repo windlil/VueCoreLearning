@@ -2,6 +2,7 @@
 import { effect } from "packages/reactivity"
 import { createComponentInstance, setupComponent } from "./component"
 import { ShapeFlags } from "packages/shared/ShapeFlags"
+import { hasOwn } from "packages/shared"
 
 export function render(vnode, container, parent) {
   patch(null,vnode, container, parent)
@@ -53,12 +54,20 @@ function patchElement(n1, n2, container, parent) {
 }
 
 function patchProps(el, oldProps, newProps) {
-  for (const key in newProps) {
-    const prevProp = oldProps[key]
-    const nextProp = newProps[key]
-
-    if (prevProp !== nextProp) {
-      patchProp(el, key, prevProp, nextProp)
+  if (oldProps !== newProps) {
+    for (const key in newProps) {
+      const prevProp = oldProps[key] || {}
+      const nextProp = newProps[key] || {}
+  
+      if (prevProp !== nextProp) {
+        patchProp(el, key, prevProp, nextProp)
+      }
+    }
+  
+    for (const key in oldProps) {
+      if (!hasOwn(newProps, key)) {
+        patchProp(el, key, oldProps[key], null)
+      }
     }
   }
 }
@@ -82,14 +91,18 @@ function mountElement(vnode, container, parent)  {
   container.append(el)
 }
 
-export function patchProp(el, key, preVal, nextVal) {
-  console.log('patchProp',nextVal)
+export function patchProp(el:HTMLElement, key, preVal, nextVal) {
   const isEvent = key.slice(0, 2) === 'on'
   if (isEvent) {
     const event = key.slice(2).toLowerCase()
     el.addEventListener(event, nextVal)
   } else {
-    el.setAttribute(key, nextVal)
+    if (nextVal === undefined || nextVal === null) {
+      //if prop undefined, delete this prop
+      el.removeAttribute(key)
+    } else {
+      el.setAttribute(key, nextVal)
+    }
   }
 }
 

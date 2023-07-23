@@ -8,9 +8,26 @@ const App = {
       count.value++
     }
 
+    const props = ref({
+      foo: "foo",
+      bar: 'bar'
+    })
+
+    const onChangeProps1 = () => {
+      props.value.foo = undefined
+    }
+    const onChangeProps2 = () => {
+      props.value = {
+        foo: 'foo'
+      }
+    }
+
     return {
       onClick,
+      onChangeProps1,
+      onChangeProps2,
       count,
+      props
     }
   },
   render() {
@@ -18,7 +35,9 @@ const App = {
       'div',
       {
         id: "root",
-        foo: this.count
+        count: this.count,
+        foo: this.props.foo,
+        bar: this.props.bar
       },
       [
         h('div', {}, "count:" + this.count),
@@ -26,6 +45,16 @@ const App = {
           onClick: this.onClick
         },
         'click'
+        ),
+        h('button', {
+          onClick: this.onChangeProps1
+        },
+        'undefined'
+        ),
+        h('button', {
+          onClick: this.onChangeProps2
+        },
+        'button3'
         )
       ]
     )
