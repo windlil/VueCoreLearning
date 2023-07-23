@@ -20,3 +20,7 @@ export {
   provide,
   inject
 } from './apiinject'
+
+export {
+  createTextContent
+} from './vnode'

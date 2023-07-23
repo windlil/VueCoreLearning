@@ -33,3 +33,7 @@ function getFlags(type) {
   }
   return 0
 }
+
+export function createTextContent(text: string) {
+  return createVNode('Text',{}, text)
+}

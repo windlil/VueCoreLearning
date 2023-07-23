@@ -1,6 +1,6 @@
 import { publicInstanceHandler } from "./componentPublicInstanceHandler"
 import { initProps } from "./componentProps"
-import { shallowReadonly } from "packages/reactivity"
+import { proxyRefs, shallowReadonly } from "packages/reactivity"
 import { emit } from "./emit"
 import { initSlots } from "./componentSlots"
 
@@ -12,8 +12,10 @@ export function createComponentInstance(vnode, parent) {
     props: {},
     emit: () => {},
     slots: {},
-    provides: {},
-    parent
+    provides: parent? parent.provides: {},
+    parent,
+    isMounted: false,
+    subTree: {}
   }
 
   component.emit = emit.bind(null, component) as any
@@ -51,7 +53,7 @@ function setupStatefulComponent(instance) {
 
 function handleSetupResult(instance, setupResult) {
   if (typeof setupResult === 'object') {
-    instance.setupResult = setupResult
+    instance.setupResult = proxyRefs(setupResult)
   }
 
   finishComponnetSetup(instance)

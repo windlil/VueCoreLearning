@@ -4,7 +4,12 @@ export function provide(key, value) {
   const instance = getCurrentInstance()
 
   if (instance) {
-    const { provides } = instance
+    let { provides } = instance
+    const parentProvides = instance.parent.provides
+
+    if (provides === parentProvides) {
+      provides = instance.parent.provides = Object.create(parentProvides)
+    }
     provides[key] =value
   }
 }
