@@ -7,13 +7,23 @@ export function render(vnode, container) {
 }
 
 function patch(vnode, container) {
-  const { shapeFlags } = vnode
+  const { shapeFlags, type } = vnode
 
-  if (shapeFlags & ShapeFlags.STATEFUL_COMPONENT) {
-    processComponent(vnode, container)
-  } else if (shapeFlags & ShapeFlags.ELEMENT) {
-    processElement(vnode, container)
+  switch(type) {
+    case "Fragment":
+      processFragment(vnode, container)
+      break
+    default:
+      if (shapeFlags & ShapeFlags.STATEFUL_COMPONENT) {
+        processComponent(vnode, container)
+      } else if (shapeFlags & ShapeFlags.ELEMENT) {
+        processElement(vnode, container)
+      }
   }
+}
+
+function processFragment(vnode, container) {
+  mountChildren(vnode.children, container)
 }
 
 function processElement(vnode: any, container: any) {
@@ -45,6 +55,7 @@ function mountElement(vnode, container)  {
 }
 
 function mountChildren(children, container)  {
+  console.log(children)
   for (const vnode of children)  {
     patch(vnode, container)
   }

@@ -2,6 +2,8 @@ import { publicInstanceHandler } from "./componentPublicInstanceHandler"
 import { initProps } from "./componentProps"
 import { shallowReadonly } from "packages/reactivity"
 import { emit } from "./emit"
+import { initSlots } from "./componentSlots"
+import { ShapeFlags } from "packages/shared/ShapeFlags"
 
 
 export function createComponentInstance(vnode) {
@@ -10,7 +12,8 @@ export function createComponentInstance(vnode) {
     type: vnode.type,
     setupResult: {},
     props: {},
-    emit: () => {}
+    emit: () => {},
+    slots: {}
   }
 
   component.emit = emit.bind(null, component) as any
@@ -19,13 +22,16 @@ export function createComponentInstance(vnode) {
 }
 
 export function setupComponent(instance) {
-  //TODO
-  //initSlots()
-  console.log(instance.vnode.props)
+  
   initProps(instance, instance.vnode.props)
+
+  initSlots(instance, instance.vnode.children)
+
 
   setupStatefulComponent(instance)
 }
+
+
 
 function setupStatefulComponent(instance) {
   const Component = instance.type
@@ -35,8 +41,10 @@ function setupStatefulComponent(instance) {
   instance.proxy = new Proxy({_: instance}, publicInstanceHandler)
   
   if (setup) {
+    setCurrentInstance(instance)
     //props should be shallowReadonly
     const setupResult = setup(shallowReadonly(props), { emit: instance.emit })
+    setCurrentInstance(null)
     handleSetupResult(instance, setupResult)
   }
 }
@@ -54,4 +62,14 @@ function finishComponnetSetup(instance) {
   if (Component.render) {
     instance.render = Component.render
   }
+}
+
+let currentInstance
+
+export function getCurrentInstance() {
+  return currentInstance
+}
+
+function setCurrentInstance(instance) {
+  currentInstance = instance
 }

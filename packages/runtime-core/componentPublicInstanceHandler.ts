@@ -1,7 +1,8 @@
 import { hasOwn } from "packages/shared"
 
 const publicPropertiesMap = {
-  $el: (i) => i.vnode.el
+  $el: (i) => i.vnode.el,
+  $slots: (i) => i.slots
 }
 
 

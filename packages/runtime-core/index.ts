@@ -7,3 +7,11 @@ export { h } from './h'
 export {
   render
 } from './render'
+
+export {
+  renderSlots
+} from './renderSlots'
+
+export {
+  getCurrentInstance
+} from './component'

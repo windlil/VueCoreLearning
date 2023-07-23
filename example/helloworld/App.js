@@ -1,4 +1,4 @@
-import { h } from '../../dist/mini-vue.mjs'
+import { h, getCurrentInstance } from '../../dist/mini-vue.mjs'
 import { foo } from './foo.js'
 
 export const App = {
@@ -8,13 +8,23 @@ export const App = {
     {
       style: "color: red",
     },
-    [h(foo,{
+    [h(
+      foo,
+      {
       onAddFooTest(a, b) {
         console.log('emit执行', a,b)
       }
-    })])
+      },
+      {
+        header: ({age}) => h('p', {}, 'age' + age),
+        footer: ({ age }) => h('p',{},'age:' +age)
+      }
+    )
+    ])
   },
   setup() {
+    const instance = getCurrentInstance()
+    console.log(instance)
     return {
       msg: 'mini-vue'
     }
