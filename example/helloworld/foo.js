@@ -1,6 +1,7 @@
-import { h,renderSlots, getCurrentInstance  } from '../../dist/mini-vue.mjs'
+import { h,renderSlots, getCurrentInstance, inject  } from '../../dist/mini-vue.mjs'
 export const foo = {
   setup(props, { emit }) {
+    console.log(inject('a'))
     const instance = getCurrentInstance()
     console.log(instance)
     const emitCount = () => {

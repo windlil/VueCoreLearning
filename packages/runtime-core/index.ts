@@ -15,3 +15,8 @@ export {
 export {
   getCurrentInstance
 } from './component'
+
+export {
+  provide,
+  inject
+} from './apiinject'

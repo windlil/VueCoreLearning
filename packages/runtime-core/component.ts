@@ -3,17 +3,17 @@ import { initProps } from "./componentProps"
 import { shallowReadonly } from "packages/reactivity"
 import { emit } from "./emit"
 import { initSlots } from "./componentSlots"
-import { ShapeFlags } from "packages/shared/ShapeFlags"
 
-
-export function createComponentInstance(vnode) {
+export function createComponentInstance(vnode, parent) {
   const component = {
     vnode,
     type: vnode.type,
     setupResult: {},
     props: {},
     emit: () => {},
-    slots: {}
+    slots: {},
+    provides: {},
+    parent
   }
 
   component.emit = emit.bind(null, component) as any

@@ -1,4 +1,4 @@
-import { h, getCurrentInstance } from '../../dist/mini-vue.mjs'
+import { h, getCurrentInstance, provide } from '../../dist/mini-vue.mjs'
 import { foo } from './foo.js'
 
 export const App = {
@@ -23,6 +23,7 @@ export const App = {
     ])
   },
   setup() {
+    provide('a',100)
     const instance = getCurrentInstance()
     console.log(instance)
     return {
