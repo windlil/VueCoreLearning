@@ -124,6 +124,38 @@ function patchKeyChildren(c1, c2, container, parent, anchor) {
         i++
       }
     }
+  } else {
+    //center compare
+    let s1 = i
+    let s2 = i
+
+    const keyToNewIndexMap = new Map()
+    for (let i = s2; i <= e2; i++) {
+      const nextChild = c2[i]
+      keyToNewIndexMap.set(nextChild.key, i)
+    }
+
+    for (let i = s1; i < e1; i++) {
+      const prevChild = c1[i]
+
+      let nexIndex
+      if (nexIndex.key !== null) {
+        nexIndex = keyToNewIndexMap.get(prevChild)
+      } else {
+        for (let j = s2; j < e2; j++) {
+          if (isSamenVNodeType(prevChild, c2[j])) {
+            nexIndex = j
+            break
+          }
+        }
+      }
+      if (nexIndex === undefined) {
+        hostRemove(prevChild.el)
+      } else {
+        patch(prevChild, c2[nexIndex], container, parent, null)
+      }
+
+    }
   }
 }
 
